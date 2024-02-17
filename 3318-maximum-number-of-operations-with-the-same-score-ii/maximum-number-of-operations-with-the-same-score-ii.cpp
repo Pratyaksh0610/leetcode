@@ -24,10 +24,6 @@ public:
         int n=nums.size();
         int st=nums[0]+nums[1],end=nums[n-2]+nums[n-1],mid=nums[0]+nums[n-1];
         vector<vector<int>>dp1(n,vector<int>(n,-1));
-        // vector<vector<int>>dp3(n,vector<int>(n,-1));
-        // vector<vector<int>>dp2(n,vector<int>(n,-1));
-
-        // map<pair<int,int>,int>dp1,dp2,dp3;
         int a=1+fun(nums,2,n-1,st,dp1);
         int b=1+fun(nums,0,n-3,end,dp1);
         int c=1+fun(nums,1,n-2,mid,dp1);
