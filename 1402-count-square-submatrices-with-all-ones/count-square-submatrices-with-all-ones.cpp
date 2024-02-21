@@ -32,7 +32,7 @@ public:
     int countSquares(vector<vector<int>>& m) {
         int r = m.size(), c = m[0].size();
         int ans = 0;
-        cout<<m.size()<<" "<<m[0].size()<<endl;
+        // cout<<m.size()<<" "<<m[0].size()<<endl;
         for (int i = 0; i < r; i++) {
             for (int j = 0; j < c; j++) {
                 if (m[i][j] == 1) {
