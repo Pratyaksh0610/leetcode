@@ -2,9 +2,9 @@
 const int mod = 1e9 + 7;
 class Solution {
 private:
-    ll ans = 0;
-    ll fun(ll mini, ll ind, ll pp, vector<int>& g, vector<int>& p,
-            vector<vector<vector<ll>>>& dp) {
+    int ans = 0;
+    int fun(int mini, int ind, int pp, vector<int>& g, vector<int>& p,
+            vector<vector<vector<int>>>& dp) {
         if (mini < 0) {
             mini = 0;
         }
@@ -21,16 +21,16 @@ private:
             return dp[ind][mini][pp];
         }
         // take
-        ll take = fun(mini - p[ind], ind + 1, pp - g[ind], g, p, dp);
-        ll ntake = fun(mini, ind + 1, pp, g, p, dp);
+        int take = fun(mini - p[ind], ind + 1, pp - g[ind], g, p, dp);
+        int ntake = fun(mini, ind + 1, pp, g, p, dp);
         return dp[ind][mini][pp] = (take + ntake)%mod;
     }
 
 public:
-    int profitableSchemes(ll n, ll minp, vector<int>& g, vector<int>& p) {
-        ll size = g.size();
-        vector<vector<vector<ll>>> dp(
-            size + 1, vector<vector<ll>>(minp + 1, vector<ll>(n + 1, -1)));
+    int profitableSchemes(int n, int minp, vector<int>& g, vector<int>& p) {
+        int size = g.size();
+        vector<vector<vector<int>>> dp(
+            size + 1, vector<vector<int>>(minp + 1, vector<int>(n + 1, -1)));
         // vector<vector<int>>dp(g.size(),vector<int>(minp,-1));
         return fun(minp, 0, n, g, p, dp)%mod;
         // return ans%mod;
