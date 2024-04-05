@@ -21,6 +21,9 @@ struct Node {
 	bool isEnd() {
 		return flag;
 	}
+    void removeEnd(){
+        flag=false;
+    }
 };
 class Trie {
 // public:
@@ -44,7 +47,7 @@ public:
 		node->setEnd();
 	}
 
-    void fun(Node*node,int i,int j,vector<vector<bool>>&vis,vector<vector<char>>&b,set<string>&s,string w){
+    void fun(Node*node,int i,int j,vector<vector<bool>>&vis,vector<vector<char>>&b,vector<string>&s,string w){
         int r=b.size(),c=b[0].size();
         if(i<0||i>=r||j<0||j>=c||vis[i][j]){
             return;
@@ -57,7 +60,8 @@ public:
         node=node->links[ind];
         w.push_back(b[i][j]);
         if(node->isEnd()){
-            s.insert(w);
+            s.push_back(w);
+            node->removeEnd();
         }
         vis[i][j]=true;
         int row[]={-1,0,1,0};
@@ -80,15 +84,15 @@ public:
             t.insert(w[i]);
         }
         vector<vector<bool>>vis(r,vector<bool>(c,0));
-        set<string>s;
+        // set<string>s;
         for(int i=0;i<r;i++){
             for(int j=0;j<c;j++){
-                t.fun(t.root,i,j,vis,b,s,"");
+                t.fun(t.root,i,j,vis,b,ans,"");
             }
         }
-        for(auto it:s){
-            ans.push_back(it);
-        }
+        // for(auto it:s){
+        //     ans.push_back(it);
+        // }
 
         return ans;
     }
