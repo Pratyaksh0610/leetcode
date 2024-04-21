@@ -1,85 +1,59 @@
-#define pi pair<int, int>
-
-class p {
-public:
-    int node, wt, ind;
-    string s;
-    p(int a, int b, int c, string s1) {
-        node = a, wt = b, ind = c;
-        s = s1;
-    }
-};
-
-class compa {
-public:
-    bool operator()(p& a, p& b) {
-        if (a.wt > b.wt) {
-            return true;
-        }
-        return false;
-    }
-};
+#define pi pair<int,int>
 
 class Solution {
-public:
-    vector<bool> findAnswer(int n, vector<vector<int>>& e) {
-        vector<vector<p>> v(n);
-        for (int i = 0; i < e.size(); i++) {
-            int f = e[i][0], s = e[i][1], w = e[i][2];
-            v[f].push_back(p(s, w, i, ""));
-            v[s].push_back(p(f, w, i, ""));
-        }
+    private:
 
-        vector<bool> vis(e.size(), false);
-        vector<int> visNodes(n, INT_MAX);
-        visNodes[0] = 0;
-
-
-        priority_queue<p, vector<p>, compa> pq;
-        for (int i = 0; i < v[0].size(); i++) {
-            p temp = v[0][i];
-            pq.push(temp);
-        }
-
-        while (pq.size()) {
-            p temp = pq.top();
+    void fun(vector<int>&vis,int node,vector<vector<pi>>&e){
+        priority_queue<pi,vector<pi>,greater<pi>>pq;
+        pq.push({0,node});
+        //dist,node
+        while(pq.size()){
+            pi temp=pq.top();
             pq.pop();
-
-            int node = temp.node, wt = temp.wt, ind = temp.ind;
-            string path=temp.s;
-
-            if (wt <= visNodes[node]) {
-                visNodes[node] = wt;
-                if (node == n - 1) {
-                    // cout<<temp.s<<endl;
-                    string t1 = "";
-                    for (int i = 0; i < temp.s.size(); i++) {
-                        if (temp.s[i] == ',') {
-                            if (t1.size()) {
-                                int val = stoi(t1);
-                                vis[val] = true;
-                            }
-                            t1 = "";
-                        } else {
-                            t1 += temp.s[i];
-                        }
-                    }
-                    if (t1.size()) {
-                        int val = stoi(t1);
-                        vis[val] = true;
-                    }
-                    vis[ind]=true;
-                    continue;
-                }
-                for (int i = 0; i < v[node].size(); i++) {
-                    p tt = v[node][i];
-                    tt.wt = tt.wt + wt;
-                    tt.s = temp.s + ',' + to_string(ind);
-                    pq.push(tt);
-                }
+            int tempNode=temp.second,dist=temp.first;
+            if(vis[tempNode]<dist){
+                continue;
+            }
+            vis[tempNode]=dist;
+            for(int i=0;i<e[tempNode].size();i++){
+                pi it=e[tempNode][i];
+                pq.push({dist+it.second,it.first});
             }
         }
+    }
 
-        return vis;
+
+public:
+    vector<bool> findAnswer(int n, vector<vector<int>>& e) {
+        vector<int>vis1(n,1e8),vis2(n,1e8);
+        vis1[0]=0,vis2[n-1]=0;
+        vector<vector<pi>>edges(n);
+
+        for(int i=0;i<e.size();i++){
+            int f=e[i][0],s=e[i][1],w=e[i][2];
+            edges[f].push_back({s,w});
+            edges[s].push_back({f,w});
+        }
+
+        fun(vis1,0,edges);
+        fun(vis2,n-1,edges);
+        // for(int i=0;i<n;i++){
+        //     cout<<vis1[i]<<" ";
+        // }
+        // cout<<endl;
+        // for(int i=0;i<n;i++){
+        //     cout<<vis2[i]<<" ";
+        // }
+        int mini=vis1[n-1];
+        vector<bool>visEdges(e.size(),false);
+        for(int i=0;i<e.size();i++){
+            int f=e[i][0],s=e[i][1],w=e[i][2];
+            int val1=vis1[f]+vis2[s]+w;
+            int val2=vis1[s]+vis2[f]+w;
+            if(val1==mini||val2==mini){
+                visEdges[i]=true;
+            }
+        }
+        return visEdges;
     }
 };
