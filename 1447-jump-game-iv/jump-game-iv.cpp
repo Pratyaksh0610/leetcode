@@ -12,6 +12,7 @@ public:
         queue<pi>q;
         q.push({0,0});
         vector<int>dist(n,INT_MAX);
+        unordered_map<int,bool>vis;
 
         while(q.size()){
             int s=q.size();
@@ -29,15 +30,18 @@ public:
                 q.push({ind+1,dist[ind]+1});
                 q.push({ind-1,dist[ind]+1});
                 // cout<<arr[ind]<<" "<<ind<<" "<<cost<<endl;
-                for(auto it:m[arr[ind]]){
-                    if(it!=ind){
-                        q.push({it,dist[ind]+1});
-                        // continue;
+                if(vis[arr[ind]]==false){
+                    for(auto it:m[arr[ind]]){
+                        if(it!=ind){
+                            q.push({it,dist[ind]+1});
+                            // continue;
+                        }
                     }
+                    vis[arr[ind]]=true;
                 }
-                if(m.find(arr[ind])!=m.end()){
-                    m.erase(arr[ind]);
-                }
+                // if(m.find(arr[ind])!=m.end()){
+                //     m.erase(arr[ind]);
+                // }
             }
         }
         return dist[n-1];
