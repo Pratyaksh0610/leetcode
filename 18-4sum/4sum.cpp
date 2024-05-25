@@ -17,26 +17,23 @@ public:
                     continue;
                 }
                 ll sum=nums[i]+nums[j];
-                unordered_map<ll,int>m;
-                for(int k=j+1;k<n;k++){
-                    ll tot=sum+nums[k];
-                    ll rem=t-tot;
-                    if(m.find(rem)!=m.end()){
-                        vector<int>temp={nums[i],nums[j],nums[k],(int)rem};
+                int k=j+1,l=n-1;
+                while(k<l){
+                    ll val=sum+nums[k]+nums[l];
+                    if(val==t){
+                        vector<int>temp={nums[i],nums[j],nums[k],nums[l]};
                         ans.push_back(temp);
-                        int value=nums[k];
-                        while(k<n&&nums[k]==value){
+                        int kk=nums[k];
+                        while(k<l&&nums[k]==kk){
                             k++;
                         }
-                        if(k<n){
-                            k--;
-                        }
-                        // s.insert(temp);
                     }
-                    if(k<n){
-                        m[nums[k]]++;
+                    else if(val>t){
+                        l--;
                     }
-                    // m[nums[k]]++;
+                    else if(val<t){
+                        k++;
+                    }
                 }
             }
         }
