@@ -15,12 +15,13 @@ private:
         return true;
     }
 
-    void fun(vector<vector<string>>& ans, string& s, int ind, vector<string> temp,
+    void fun(vector<vector<string>>& ans, string& s, int ind, vector<string> &temp,
              string tt) {
                 if(ind>=s.size()){
                     if(isPalindrome(tt)||tt.size()==0){
                         temp.push_back(tt);
                         ans.push_back(temp);
+                        temp.pop_back();
                     }
                     return;
                 }
@@ -31,6 +32,7 @@ private:
                     temp.push_back(tt);
                     tt=s[ind];
                     fun(ans,s,ind+1,temp,tt);
+                    temp.pop_back();
                 }
         return;
     }
