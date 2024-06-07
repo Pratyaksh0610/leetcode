@@ -11,7 +11,6 @@ public:
         ll ans=0;
         for(int i=0;i<n;i++){
             s.insert(nums1[i]);
-            //150,100
         }
         s.insert(-1);
         for(int i=0;i<n;i++){
