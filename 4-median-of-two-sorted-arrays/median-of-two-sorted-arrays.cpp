@@ -19,19 +19,19 @@ public:
                 continue;
             }
             int l1, r1, l2, r2;
-            cout<<"MID: "<<mid<<" rem: "<<rem<<endl;
+            // cout<<"MID: "<<mid<<" rem: "<<rem<<endl;
             l1 = (mid - 1 >= 0&&mid-1<n1) ? nums1[mid - 1] : INT_MIN;
             r1 = (mid < n1&&mid>=0) ? nums1[mid] : INT_MAX;
             l2 = (rem - 1 >= 0&&rem-1<n2) ? nums2[rem - 1] : INT_MIN;
             r2 = (rem < n2&&rem>=0) ? nums2[rem] : INT_MAX;
-            cout << l1 << " " << r1 << " " << l2 << " " << r2 << endl;
+            // cout << l1 << " " << r1 << " " << l2 << " " << r2 << endl;
 
             if (l1 <= r2 && l2 <= r1) {
                 int first = min(r1, r2);
                 if (total % 2 == 0) {
                     return first;
                 }
-                cout << l1 << " " << r1 << " " << l2 << " " << r2 << endl;
+                // cout << l1 << " " << r1 << " " << l2 << " " << r2 << endl;
                 double ans = 0;
                 int cnt = 0;
                 while (cnt < 2) {
@@ -44,7 +44,7 @@ public:
                         r2 = (rem + 1 < n2) ? nums2[rem + 1] : INT_MAX;
                         cnt++;
                     }
-                    cout << l1 << " " << r1 << " " << l2 << " " << r2 << endl;
+                    // cout << l1 << " " << r1 << " " << l2 << " " << r2 << endl;
                 }
                 ans /= 2;
                 return ans;
