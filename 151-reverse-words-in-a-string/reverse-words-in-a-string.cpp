@@ -1,28 +1,43 @@
 class Solution {
-    private:
-    void addWord(string &ans,string &temp){
-        if (temp.size()) {
-            reverse(temp.begin(), temp.end());
-            if (ans.empty()) {
-                ans = temp;
-            } else {
-                ans = ans + " " + temp;
-            }
-            temp="";
-        }
-    }
 public:
     string reverseWords(string s) {
-        string ans, temp;
         int n = s.size();
-        for (int i = n - 1; i >= 0; i--) {
-            if (s[i] == ' ') {
-                addWord(ans,temp);
-            } else if (s[i] != ' ') {
-                temp.push_back(s[i]);
+        int i = 0, j = 0;
+        string ans;
+        reverse(s.begin(), s.end());
+        while (i < n && s[i] == ' ') {
+            i++;
+        }
+        j = i;
+        while (j < n) {
+            if (s[j] != ' ') {
+                j++;
+            } else {
+                // eulb_
+                // i   j
+                if (ans.size()) {
+                    ans += " ";
+                }
+                int ind = j - 1;
+                while (ind >= i) {
+                    ans += s[ind--];
+                }
+                i = j;
+                while (i < n && s[i] == ' ') {
+                    i++;
+                }
+                j = i;
             }
         }
-        addWord(ans,temp);
+        if (s[j - 1] != ' ') {
+            if (ans.size()) {
+                ans += " ";
+            }
+            int ind = j - 1;
+            while (ind >= i) {
+                ans += s[ind--];
+            }
+        }
         return ans;
     }
 };
