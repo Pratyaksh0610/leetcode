@@ -1,33 +1,45 @@
 class Solution {
-private:
-    bool rowCheck(vector<vector<char>>& b, int i, char ch) {
-        if (i < 0 || i >= 9)
-            return false;
-        for (int j = 0; j < 9; j++) {
-            if (b[i][j] == ch) {
+    // check row
+    // check col
+    // check subBox
+    bool rowCheck(vector<vector<char>>& sudoku, int index) {
+        int row = index / 9;
+        int col = index % 9;
+        char ch = sudoku[row][col];
+        for (int i = 0; i < 9; i++) {
+            if (sudoku[row][i] == ch && i != col) {
                 return false;
             }
         }
         return true;
     }
-    bool colCheck(vector<vector<char>>& b, int i, char ch) {
-        if (i < 0 || i >= 9)
-            return false;
-        for (int j = 0; j < 9; j++) {
-            if (b[j][i] == ch) {
+    bool colCheck(vector<vector<char>>& sudoku, int index) {
+        int row = index / 9;
+        int col = index % 9;
+        char ch = sudoku[row][col];
+        for (int i = 0; i < 9; i++) {
+            if (sudoku[i][col] == ch && i != row) {
                 return false;
             }
         }
         return true;
     }
-    bool boxCheck(vector<vector<char>>& b, int i, int j, char ch) {
-        if (i < 0 || i >= 9 || j < 0 || j >= 9)
-            return false;
-
-        int limr = 3*(i / 3) + 3, limc = 3*(j / 3) + 3;
-        for (int sr = (i / 3)*3; sr < limr; sr++) {
-            for (int sc = 3*(j / 3); sc < limc; sc++) {
-                if (b[sr][sc] == ch) {
+    bool subBoxCheck(vector<vector<char>>& sudoku, int index) {
+        int row = index / 9;
+        int col = index % 9;
+        int box = 3 * (row / 3) + (col / 3);
+        char ch = sudoku[row][col];
+        vector<int> cnt(10, 0);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (sudoku[3 * (box / 3) + i][3 * (box % 3) + j] == '.') {
+                    continue;
+                }
+                int cntIndex =
+                    sudoku[3 * (box / 3) + i][3 * (box % 3) + j] - '0';
+                // cout<<cntIndex<<endl;
+                cnt[cntIndex]++;
+                if (cnt[cntIndex] > 1) {
                     return false;
                 }
             }
@@ -35,36 +47,53 @@ private:
         return true;
     }
 
-    bool fun(vector<vector<char>>& b, int r, int c) {
-        if (r >=9) {
-            // cout<<"SOLVED"<<endl;
-            return true;
-        } else if (c == 9) {
-            return fun(b, r + 1, 0);
-        } else if (b[r][c] != '.') {
-            return fun(b, r, c + 1);
+    bool isValidSudoku(vector<vector<char>>& sudoku, int index) {
+        bool isValid = true;
+        isValid = rowCheck(sudoku, index);
+        if (isValid) {
+            isValid = colCheck(sudoku, index);
         }
+        if (isValid) {
+            isValid = subBoxCheck(sudoku, index);
+        }
+        return isValid;
+    }
 
-        bool done = false;
-        
-        for (int i = 1; i <= 9; i++) {
-            char ch = '0' + i;
-            bool check = rowCheck(b, r, ch) && colCheck(b, c, ch) &&
-                         boxCheck(b, r, c, ch);
-            if (check) {
-                b[r][c] = ch;
-                bool val= fun(b, r, c + 1);
-                if (val) {
-                    return val;
+    bool move(vector<vector<char>>& board, 
+              int index) {
+        int row = index / 9;
+        int col = index % 9;
+        // cout<<row<<" "<<col<<endl;
+        if (index >= 81) {
+            // board = temp;
+            return true;
+        }
+        if (board[row][col] == '.') {
+            for (int i = 1; i <= 9; i++) {
+                board[row][col] = '0' + i;
+                bool check = isValidSudoku(board, index);
+                if (check) {
+                    bool completed = move(board, index + 1);
+                    if (completed) {
+                        return true;
+                    }
                 }
-                b[r][c] = '.';
+                board[row][col] = '.';
             }
         }
-        return done;
+        bool check = isValidSudoku(board, index);
+        if (check) {
+            bool completed = move(board, index + 1);
+            if (completed) {
+                return true;
+            }
+        }
+        return false;
     }
 
 public:
-    void solveSudoku(vector<vector<char>>& b) {
-        fun(b, 0, 0);
+    void solveSudoku(vector<vector<char>>& board) {
+        // vector<vector<char>> temp = board;
+        move(board, 0);
     }
 };
