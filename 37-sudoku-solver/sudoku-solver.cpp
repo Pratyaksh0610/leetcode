@@ -80,15 +80,18 @@ class Solution {
                 }
                 board[row][col] = '.';
             }
-        }
-        bool check = isValidSudoku(board, index);
-        if (check) {
-            bool completed = move(board, index + 1);
-            if (completed) {
-                return true;
+            if(board[row][col]=='.'){
+                return false;
             }
         }
-        return false;
+        // bool check = isValidSudoku(board, index);
+        // if (check) {
+            return move(board, index + 1);
+            // if (completed) {
+                // return true;
+            // }
+        // }
+        // return false;
     }
 
 public:
