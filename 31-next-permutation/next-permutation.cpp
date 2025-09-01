@@ -1,29 +1,30 @@
 class Solution {
 public:
-// 1,3,2 should be 2,1,3
-//1,3,2,0 should be 2,0,1,3
-//1,5,1
-//  i
     void nextPermutation(vector<int>& nums) {
-        int n=nums.size();
-        int i=n-2;
-        for(;i>=0;i--){
+        int n=nums.size();//3
+        int index=n-1;//2
+        //1,2,3
+        for(int i=n-2;i>=0;i--){//1
             if(nums[i]<nums[i+1]){
+                index=i;//1
                 break;
             }
         }
-        cout<<i<<endl;
-        if(i==-1){
-            reverse(nums.begin(),nums.end());
+        int bIndex=-1;
+        for(int i=index+1;i<n;i++){//1
+            if(nums[i]>nums[index]&&bIndex!=-1&&nums[bIndex]>nums[index]){
+                bIndex=i;
+            }
+            if(bIndex==-1){
+                bIndex=i;
+            }
+        }
+        if(bIndex==-1){
+            sort(nums.begin(),nums.end());
             return;
         }
-        int smallest=nums[i];
-        for(int j=n-1;j>=i;j--){
-            if(nums[j]>nums[i]){
-                swap(nums[i],nums[j]);
-                break;
-            }
-        }
-        reverse(nums.begin()+i+1,nums.end());
+        swap(nums[bIndex],nums[index]);
+        // cout<<index<<endl;
+        sort(nums.begin()+index+1,nums.end());
     }
 };
