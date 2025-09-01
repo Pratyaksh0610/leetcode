@@ -3,34 +3,40 @@ public:
     void setZeroes(vector<vector<int>>& matrix) {
         int rows=matrix.size();
         int columns=matrix[0].size();
-        vector<bool>zeroRows(rows,false),zeroColumns(columns,false);
+        bool isInitialRowZero=false,isInitialColumnZero=false;
         for(int i=0;i<rows;i++){
             for(int j=0;j<columns;j++){
                 if(matrix[i][j]==0){
-                    zeroRows[i]=true;
-                    zeroColumns[j]=true;
+                    if(i!=0){
+                    matrix[i][0]=0;
+                    }
+                    else{
+                        isInitialRowZero=true;
+                    }
+                    matrix[0][j]=0;
                 }
             }
         }
-        for(int i=0;i<rows;i++){
-            if(zeroRows[i]){
-                for(int j=0;j<columns;j++){
+        //matrix done except 1st row and 1st col
+        for(int i=1;i<rows;i++){
+            for(int j=1;j<columns;j++){
+                if(matrix[i][0]==0||matrix[0][j]==0){
                     matrix[i][j]=0;
                 }
             }
         }
-        for(int i=0;i<rows;i++){
-            if(zeroRows[i]){
-                for(int j=0;j<columns;j++){
-                    matrix[i][j]=0;
-                }
-            }
-        }for(int i=0;i<columns;i++){
-            if(zeroColumns[i]){
-                for(int j=0;j<rows;j++){
-                    matrix[j][i]=0;
-                }
+        //1st col
+        if(matrix[0][0]==0){
+            for(int i=0;i<rows;i++){
+                matrix[i][0]=0;
             }
         }
+        //1st row
+        if(isInitialRowZero){
+            for(int i=0;i<columns;i++){
+                matrix[0][i]=0;
+            }
+        }
+        
     }
 };
