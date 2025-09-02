@@ -5,7 +5,7 @@ public:
         sort(intervals.begin(),intervals.end());
         int index=0,n=intervals.size();
         while(index<n){
-            int st=intervals[index][0],end=intervals[index][1];
+            int st=intervals[index][0],end=intervals[index++][1];
             while(index<n&&intervals[index][0]<=end){
                 end=max(end,intervals[index++][1]);
             }
