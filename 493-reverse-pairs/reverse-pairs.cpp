@@ -1,50 +1,52 @@
 #define ll long long int
 class Solution {
+    private:
 
-ll bs(vector<int>& nums ,ll si,ll mid,ll ei){
-    
-    ll st=mid+1,end=ei;
-    ll j=mid;
-    while(st<=end){
-        ll nmid=st+(end-st)/2;
-        ll val=(ll)2*(ll)nums[nmid];
-        if(val<(ll)nums[si]){
-            j=max(j,nmid);
-            st=nmid+1;
+    void merge(vector<int>&nums,int si,int ei,int &ans){
+        if(si>=ei) return;
+        int mid=si+(ei-si)/2;
+        int index=mid+1;
+        for(int i=si;i<=mid;i++){
+            while(index<=ei && nums[i]>(ll)2*nums[index]){
+                index++;
+            }
+            ans+=index-(mid+1);
         }
-        else{
-            end=nmid-1;
+        vector<int>temp;
+        int i=si,j=mid+1;
+        while(i<=mid&&j<=ei){
+            if(nums[i]<nums[j]){
+                temp.push_back(nums[i++]);
+            }
+            else{
+                temp.push_back(nums[j++]);
+            }
         }
+        while(i<=mid){
+            temp.push_back(nums[i++]);
+        }
+        while(j<=ei){
+            temp.push_back(nums[j++]);
+        }
+        for(int k=si;k<=ei;k++){
+            nums[k]=temp[k-si];
+        }
+        return;
     }
-    return j-mid;
-}
 
-ll merge(vector<int>& nums,ll si,ll mid,ll ei){
-    if(si>=ei){
-        return 0;
+    void split(vector<int>&nums,int si,int ei,int &ans){
+        if(si>=ei) return;
+        int mid=si+(ei-si)/2;
+        split(nums,si,mid,ans);
+        split(nums,mid+1,ei,ans);
+        merge(nums,si,ei,ans);
+        return;
     }
-    ll ans=0;
-    for(ll i=si;i<=mid;i++){
-        ans+=bs(nums,i,mid,ei);
-    }
-    sort(nums.begin()+si,nums.begin() +ei+1);
-    return ans;
-
-}
-
-ll mergeSort(vector<int>& nums,ll si,ll ei){
-    if(si>=ei){
-        return 0;
-    }
-    ll mid=si+(ei-si)/2;
-    ll val1=mergeSort(nums,si,mid);
-    ll val2= mergeSort(nums,mid+1,ei);
-    ll ans=merge(nums,si,mid,ei);
-    return ans+val1+val2;
-}
 public:
     int reversePairs(vector<int>& nums) {
-        ll n=nums.size();
-        return mergeSort(nums,0,n-1);
+        int n=nums.size();
+        int ans=0;
+        split(nums,0,n-1,ans);
+        return ans;
     }
 };
