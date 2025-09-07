@@ -9,7 +9,7 @@
  * };
  */
 class Solution {
-    ListNode* reverse(ListNode*head,ListNode* &ans){
+    ListNode* reverse(ListNode* &head,ListNode* &ans){
         if(!head->next){
             ans=head;
             return head;
