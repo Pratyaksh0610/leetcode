@@ -1,4 +1,3 @@
-#define pi pair<ListNode*,ListNode*>
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -10,20 +9,18 @@
  * };
  */
 class Solution {
-    pi fun(ListNode*head){
-        if(head->next==NULL){
-            return {head,head};
-        }
-        pi fut=fun(head->next);
-        fut.second->next=head;
-        head->next=NULL;
-        return {fut.first,head};
-        //head,curr;
-    }
 public:
     ListNode* reverseList(ListNode* head) {
-        if(!head) return head;
-        pi ans=fun(head);
-        return ans.first;
+        if(!head||!head->next){
+            return head;
+        }
+        ListNode*prev=NULL,*curr=head,*fut=head->next;
+        while(curr){
+            fut=curr->next;
+            curr->next=prev;
+            prev=curr;
+            curr=fut;
+        }
+        return prev;
     }
 };
