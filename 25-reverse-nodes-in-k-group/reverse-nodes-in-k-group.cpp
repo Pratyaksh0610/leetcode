@@ -9,19 +9,9 @@
  * };
  */
 class Solution {
-    private:
-    int len(ListNode*head){
-        int ans=0;
-        while(head){
-            head=head->next;
-            ans++;
-        }
-        return ans;
-    }
-    ListNode*rev(ListNode*head){
-        ListNode*prev,*curr,*fut;
-        prev=NULL;
-        curr=head;
+    ListNode*reverse(ListNode*head){
+        if(!head||!head->next) return head;
+        ListNode*prev=NULL,*curr=head,*fut=head->next;
         while(curr){
             fut=curr->next;
             curr->next=prev;
@@ -30,32 +20,43 @@ class Solution {
         }
         return prev;
     }
-    ListNode*fun(ListNode*head,int groups,int k){
-        if(!head||groups==0){
-            return head;
-        }
-        ListNode*st=head;
-        ListNode*end=head;
-        int kk=k;
-        while(k>0){
-            end=end->next;
-            k--;
-        }
-        ListNode*fut=end->next;
-        end->next=NULL;
-        ListNode*future=fun(fut,groups-1,kk);
-        // cout<<fut->val<<" "<<st->val<<endl;
-        ListNode*nhead=rev(st);
-        st->next=future;
-        return nhead;
-
-    }
+    // ListNode* lenReverse(ListNode* head,int k){
+    //     if()
+    // }
 public:
     ListNode* reverseKGroup(ListNode* head, int k) {
-        int length=len(head);
-        int groups=length/k;
-        // cout<<length<<" "<<groups<<endl;
-        return fun(head,groups,k-1);
-        // return head;
+        if(!head||!head->next||k==1) return head;
+        ListNode*nhead=NULL;
+        ListNode*ntail=NULL;
+        ListNode*temp=head;
+        while(temp){
+            int l=k;//2
+            ListNode*curr=temp;//1
+            while(curr&&l>1){//1
+                curr=curr->next;
+                l--;
+            }
+            if(!curr) break;//2
+            ListNode*st=temp,*end=curr->next;
+            //st=1,
+            curr->next=NULL;
+            ListNode*prev=NULL,*c=st,*fut=st->next;
+            while(c){
+                fut=c->next;
+                c->next=prev;
+                prev=c;
+                c=fut;
+            }
+            if(nhead==NULL){
+                nhead=prev,ntail=st;
+            }
+            else{
+                ntail->next=prev;
+                ntail=st;
+            }
+            ntail->next=end;
+            temp=end;
+        }
+        return nhead;
     }
 };
