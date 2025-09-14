@@ -10,7 +10,7 @@ class Solution {
         }
         return true;
     }
-    void fun(vector<vector<string>>&ans,string temp,string &s, vector<string> arr, int index){
+    void fun(vector<vector<string>>&ans,string temp,string &s, vector<string>&arr, int index){
         if(index>=s.size()){
             if(temp.empty()){
                 ans.push_back(arr);
@@ -25,6 +25,7 @@ class Solution {
         if(ch){
             arr.push_back(temp);
             fun(ans,"",s,arr,index+1);
+            arr.pop_back();
         }
     }
 public:
