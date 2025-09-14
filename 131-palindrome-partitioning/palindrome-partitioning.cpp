@@ -10,7 +10,7 @@ class Solution {
         }
         return true;
     }
-    void fun(vector<vector<string>>&ans,string temp,string &s, vector<string>&arr, int index){
+    void fun(vector<vector<string>>&ans,string &temp,string &s, vector<string>&arr, int index){
         if(index>=s.size()){
             if(temp.empty()){
                 ans.push_back(arr);
@@ -24,15 +24,18 @@ class Solution {
         bool ch=isPali(temp);
         if(ch){
             arr.push_back(temp);
-            fun(ans,"",s,arr,index+1);
+            string t="";
+            fun(ans,t,s,arr,index+1);
             arr.pop_back();
         }
+        temp.pop_back();
     }
 public:
     vector<vector<string>> partition(string s) {
         vector<vector<string>>ans;
         vector<string>arr;
-        fun(ans,"",s,arr,0);
+        string tt="";
+        fun(ans,tt,s,arr,0);
         return ans;
     }
 };
