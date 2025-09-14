@@ -1,26 +1,27 @@
 class Solution {
-      void fun(vector<vector<int>>&ans,vector<int>&nums,int ind,vector<int>temp,int t){
-        if(ind>=nums.size()){
-            if(t==0){
-                ans.push_back(temp);
-            }
+    private:
+    void generateCombinations(vector<vector<int>>&ans,vector<int>&c,vector<int>temp,int target,int index){
+        if(target==0){
+            ans.push_back(temp);
             return;
         }
-        fun(ans,nums,ind+1,temp,t);
-        while(t>=nums[ind]){
-            t-=nums[ind];
-            temp.push_back(nums[ind]);
-            fun(ans,nums,ind+1,temp,t);
+        else if(target<0 || index>=c.size()){
+            return;
+        }
+        generateCombinations(ans,c,temp,target,index+1);
+        while(target>=c[index]){
+            temp.push_back(c[index]);
+            target-=c[index];
+            generateCombinations(ans,c,temp,target,index+1);
         }
         return;
     }
 public:
-    vector<vector<int>> combinationSum(vector<int>& nums, int target) {
-        int n=nums.size();
-        sort(nums.begin(),nums.end());
+    vector<vector<int>> combinationSum(vector<int>& c, int target) {
         vector<vector<int>>ans;
+        int n=c.size();
         vector<int>temp;
-        fun(ans,nums,0,temp,target);
+        generateCombinations(ans,c,temp,target,0);
         return ans;
     }
 };
