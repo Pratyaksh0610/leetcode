@@ -1,49 +1,37 @@
 class Solution {
-private:
-    bool isPalindrome(string& s) {
-        if (s.size() == 0)
-            return false;
-        int i = 0, j = s.size() - 1;
-        while (i < j) {
-            if (s[i] == s[j]) {
-                i++;
-                j--;
-            } else {
+    bool isPali(string temp){
+        int i=0,j=temp.size()-1;
+        while(i<j){
+            if(temp[i]!=temp[j]){
                 return false;
             }
+            i++;
+            j--;
         }
         return true;
     }
+    void fun(vector<vector<string>>&ans,string temp,string &s, vector<string> arr, int index){
+        if(index>=s.size()){
+            if(temp.empty()){
+                ans.push_back(arr);
+            }
+            return;
+        }
+        temp=temp+s[index];
+        //ntake
+        fun(ans,temp,s,arr,index+1);
 
-    void fun(vector<vector<string>>& ans, string& s, int ind, vector<string> &temp,
-             string tt) {
-                if(ind>=s.size()){
-                    if(isPalindrome(tt)||tt.size()==0){
-                        temp.push_back(tt);
-                        ans.push_back(temp);
-                        temp.pop_back();
-                    }
-                    return;
-                }
-                bool check=isPalindrome(tt);
-                // tt.push_back(s[ind]);
-                fun(ans,s,ind+1,temp,tt+s[ind]);
-                if(check){
-                    temp.push_back(tt);
-                    tt=s[ind];
-                    fun(ans,s,ind+1,temp,tt);
-                    temp.pop_back();
-                }
-        return;
+        bool ch=isPali(temp);
+        if(ch){
+            arr.push_back(temp);
+            fun(ans,"",s,arr,index+1);
+        }
     }
-
 public:
     vector<vector<string>> partition(string s) {
-        // int n = nums.size();
-        // sort(nums.begin(), nums.end());
-        vector<vector<string>> ans;
-        vector<string> temp;
-        fun(ans, s, 0, temp, "");
+        vector<vector<string>>ans;
+        vector<string>arr;
+        fun(ans,"",s,arr,0);
         return ans;
     }
 };
