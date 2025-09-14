@@ -1,6 +1,6 @@
 class Solution {
     private:
-    void generateCombinations(vector<vector<int>>&ans,vector<int>&c,vector<int>temp,int target,int index){
+    void generateCombinations(vector<vector<int>>&ans,vector<int>&c,vector<int>&temp,int target,int index){
         if(target==0){
             ans.push_back(temp);
             return;
@@ -9,10 +9,16 @@ class Solution {
             return;
         }
         generateCombinations(ans,c,temp,target,index+1);
+        int cnt=0;
         while(target>=c[index]){
             temp.push_back(c[index]);
             target-=c[index];
+            cnt++;
             generateCombinations(ans,c,temp,target,index+1);
+        }
+        while(cnt>0){
+            temp.pop_back();
+            cnt--;
         }
         return;
     }
