@@ -1,44 +1,46 @@
 class Solution {
-    private:
-    int fact(int n){
-        if(n==1||n==0){
-            return 1;
+    void fun(string& ans, int k, int fact, set<int>& s) {
+        if (k == -1) {
+            return;
+        } else if (k == 0) {
+            while (s.size()) {
+                auto it = s.begin();
+                int val = *it;
+                char ch = '0' + val;
+                ans = ans + ch;
+                s.erase(*it);
+            }
+            return;
         }
-        return n*fact(n-1);
+        int num = k / fact;
+        k = k - (num)*fact;
+        auto it = s.begin();
+        // num= num*fact;
+        while (num > 0) {
+            it++;
+            num--;
+        }
+        int val = *it;
+        char ch = '0' + val;
+        ans = ans + ch;
+        // ans = ans + ('0' + *it);
+        s.erase(*it);
+        fun(ans, k, fact / s.size(), s);
     }
+
 public:
     string getPermutation(int n, int k) {
-        int rem=k;
-        set<int>ss;
-        for(int i=1;i<=n;i++){
-            ss.insert(i);
+        k--;
+        string ans = "";
+        int fact = 1;
+        set<int> s;
+        for (int i = 1; i <= n; i++) {
+            s.insert(i);
         }
-        string s;
-        while(rem>1){//rem=6
-            int val=fact(n);//6
-            int freq=val/n;//2
-            n--;//2
-
-            int cnt=1;
-            while((freq*cnt)<rem){
-                cnt++;//3
-            }
-            int number=-1;
-            int cc=cnt;
-            for(auto it:ss){
-                cnt--;
-                if(cnt==0){
-                    number=it;//3
-                    break;
-                }
-            }
-            s=s+(to_string(number));
-            ss.erase(number);
-            rem-=(freq*(cc-1));
+        for (int i = 1; i < n; i++) {
+            fact *= i;
         }
-        for(auto it:ss){
-            s=s+to_string(it);
-        }
-        return s;
+        fun(ans, k, fact, s);
+        return ans;
     }
 };
