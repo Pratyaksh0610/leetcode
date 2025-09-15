@@ -1,34 +1,44 @@
 class Solution {
-private:
-    void fun(vector<vector<int>>& ans, vector<int>& nums, int ind,
-             vector<int> temp, int t) {
-        if (ind >= nums.size()||t==0||t<0) {
-            if (t == 0) {
-                ans.push_back(temp);
-            }
+    void fun(vector<vector<int>>&ans,vector<int>&temp,vector<int>&c,int index,int t){
+        if(t==0){
+            ans.push_back(temp);
             return;
         }
-        for(int i=ind;i<nums.size();i++){
-            if(i!=ind&&nums[i]==nums[i-1]){
-                continue;
+        else if(index>=c.size()||t<0){
+            return;
+        }
+        // t-=c[index];
+        for(int i=index;i<c.size();i++){
+            if(i==index+1){
+                temp.push_back(c[i]);
+                fun(ans,temp,c,i,t-c[i]);
+                temp.pop_back();
             }
-            if(nums[i]>t){
-                break;
+            else if(i>index+1 && c[i]!=c[i-1]){
+                temp.push_back(c[i]);
+                fun(ans,temp,c,i,t-c[i]);
+                temp.pop_back();
             }
-            temp.push_back(nums[i]);
-            fun(ans,nums,i+1,temp,t-nums[i]);
-            temp.pop_back();
         }
         return;
-    }
 
+    }
 public:
-    vector<vector<int>> combinationSum2(vector<int>& nums, int target) {
-        int n = nums.size();
-        sort(nums.begin(), nums.end());
-        vector<vector<int>> ans;
-        vector<int> temp;
-        fun(ans, nums, 0, temp, target);
+    vector<vector<int>> combinationSum2(vector<int>& c, int t) {
+        vector<vector<int>>ans;
+        sort(c.begin(),c.end());
+        vector<int>temp;
+        temp.push_back(c[0]);
+        fun(ans,temp,c,0,t-c[0]);
+        temp.pop_back();
+        for(int i=1;i<c.size();i++){
+            if(i!=0&&c[i]!=c[i-1]){
+                temp.push_back(c[i]);
+                fun(ans,temp,c,i,t-c[i]);
+                temp.pop_back();
+            }
+        }
+        // fun(ans,temp,c,0,t);
         return ans;
     }
 };
