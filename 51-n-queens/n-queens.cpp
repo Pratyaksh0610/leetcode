@@ -1,6 +1,6 @@
 class Solution {
     private:
-    bool diagCheck(vector<vector<char>>&v,int r,int c,int nn){
+    bool diagCheck(vector<vector<char>>&v,int r,int c,int &nn){
         int rowInd[]={1,-1,1,-1};
         int colInd[]={1,-1,-1,1};
 
@@ -16,7 +16,7 @@ class Solution {
         }
         return true;
     }
-    bool straightCheck(vector<vector<char>>&v,int r,int c,int nn){
+    bool straightCheck(vector<vector<char>>&v,int r,int c,int &nn){
         int rowInd[]={0,0,1,-1};
         int colInd[]={1,-1,0,0};
 
@@ -32,7 +32,7 @@ class Solution {
         }
         return true;
     }
-    void fun(vector<vector<string>>&ans,vector<vector<char>>&v,int r,int n,int nn){
+    void fun(vector<vector<string>>&ans,vector<vector<char>>&v,int r,int n,int &nn){
         if(n==0){
             vector<string>fans;
             for(int i=0;i<nn;i++){
